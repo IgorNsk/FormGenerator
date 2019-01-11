@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+ debug="false">
+
+ <!-- Note we need two appends because when running inside Azkaban,
+      Azkaban will close all the appenders attached on root logger. 
+      So the Console appender might be closed when running inside
+      Azkaban but CamusConsole will remain. -->
+
+<appender name="Console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="[%c{1}] - %m%n" />
+    </layout>
+</appender>
+
+<appender name="FileAppenderRoot" class="org.apache.log4j.RollingFileAppender">
+            <param name="append" value="false" />
+            <param name="maxFileSize" value="100KB" />
+            <param name="maxBackupIndex" value="5" />
+            <!-- For Tomcat -->
+            <param name="file" value="App.log" />
+            <layout class="org.apache.log4j.PatternLayout">
+                 <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+            </layout>
+</appender>
+
+
+
+
+<root>
+    <level value="ALL" />
+    <appender-ref ref="FileAppenderRoot" />
+</root>
+
+</log4j:configuration>
