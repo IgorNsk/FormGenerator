@@ -23,6 +23,8 @@ public class TemplateWriter {
     private int currenColumn;
     private int maxRow;
 
+    private String currentTable = "";
+
     public TemplateWriter(Workbook workbook, Map<String, Object> map) {
         this.workbook = workbook;
         this.map = map;
@@ -70,6 +72,15 @@ public class TemplateWriter {
         Optional<Object> value = Optional.ofNullable(cell.getValue());
         if (value.isPresent() && value.toString().contains("%{#")) {
             LOG.debug("====================================");
+            Tag tag = new Tag(cell.getStringValue());
+            tag.parse();
+
+            if(tag.isStartForeach()) {
+                currentTable = tag.getCollection();
+            } else if(tag.isEndForteach()) {
+                currentTable = "";
+            }
+
             currentRow++;
             Row row = workbook.getWorksheets().get(currentSheet).getCells().getRows().getRowByIndex(currentRow);
             processingRow(row);
@@ -81,6 +92,9 @@ public class TemplateWriter {
             LOG.debug(map.toString());
 
             Optional<String> namespace = Optional.ofNullable(tag.getNamespace());
+            if(!"".equals(currentTable)) {
+                namespace = Optional.of(currentTable);
+            }
 
             Map<String, Object> attributes = (Map<String, Object>) map.get(namespace.orElse(""));
 

@@ -2,6 +2,7 @@ package org.sbt.loans4b.tools.template;
 
 import com.aspose.cells.PdfSaveOptions;
 import com.aspose.cells.SaveOptions;
+import org.sbt.loans4b.tools.blocks.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +35,17 @@ public class FormGeneratorImpl implements FormGenerator {
         }
 
         Map<String, Object> namespace = new HashMap<>();
+        //
         Map<String, Object> main = new HashMap<>();
-        Map<String, Object> penalty = new HashMap<>();
-
         namespace.put("main", main);
-        namespace.put("penalty", penalty);
         main.put("auditor_name", "Иванов Петр Сергеевич");
-        penalty.put("title","AAAAAAAA SSSSSSSSS SSSSSSSSSS");
+        //
+        Table penaltyList = new Table("TITLE");
+        penaltyList.addRow("title_1");
+        penaltyList.addRow("title_2");
+        penaltyList.addRow("title_3");
+        namespace.put("penaltyList", penaltyList);
+
 
 
         TemplateWriter templateWriter = new TemplateWriter(workbook, namespace);

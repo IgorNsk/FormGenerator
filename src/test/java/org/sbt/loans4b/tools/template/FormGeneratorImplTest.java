@@ -15,11 +15,11 @@ class FormGeneratorImplTest {
     }
 
     @Test
-    void makeForm() {
+    void makeFormTest() {
     }
 
     @Test
-    void generate() {
+    void generateTest() {
         form.generate("rsv.xls");
     }
 }
