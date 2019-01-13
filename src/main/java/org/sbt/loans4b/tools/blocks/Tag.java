@@ -1,4 +1,4 @@
-package org.sbt.loans4b.tools.template;
+package org.sbt.loans4b.tools.blocks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,22 +13,21 @@ public class Tag {
     private String collection;
     private String item;
     private String index;
-    private boolean startForeach = false;
-    private boolean endForteach = false;
+    private boolean startTable = false;
+    private boolean endTable = false;
 
     public Tag(String value) {
-        this.value = value.trim().toLowerCase();
+        this.value = value.trim();
     }
 
-    public void parse() {
-        LOG.debug("value.trim(): " + value);
-        if (!value.contains("#foreach") && !value.contains("#end_foreach")) {
+    public Tag parse() {
+
+        if (!value.contains("#table") && !value.contains("#end_table")) {
             namespace = value.substring(2, value.indexOf("."));
             attr = value.substring(value.indexOf(".") + 1, value.indexOf("}"));
-            LOG.debug("namespace.attr: " + namespace + " " + attr);
-        } else if (value.contains("#foreach")) {
+        } else if (value.contains("#table")) {
 
-            startForeach = true;
+            startTable = true;
 
             int fromPos = value.indexOf(":", 0);
             int toPos = value.indexOf(";", fromPos);
@@ -42,11 +41,12 @@ public class Tag {
             toPos = value.indexOf(")", fromPos);
             index = value.substring(++fromPos, toPos);
 
-            LOG.debug(String.format("parse: %s %s %s", collection, item, index));
-        } else if (value.contains("#end_foreach")) {
-            endForteach = true;
+            LOG.debug(String.format("parse: collection= %s item= %s index= %s", collection, item, index));
+        } else if (value.contains("#end_table")) {
+            endTable = true;
 
         }
+        return this;
     }
 
     public String getValue() {
@@ -85,11 +85,25 @@ public class Tag {
         return index;
     }
 
-    public boolean isStartForeach() {
-        return startForeach;
+    public boolean isStartTable() {
+        return startTable;
     }
 
-    public boolean isEndForteach() {
-        return endForteach;
+    public boolean isEndTable() {
+        return endTable;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "value='" + value + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", attr='" + attr + '\'' +
+                ", collection='" + collection + '\'' +
+                ", item='" + item + '\'' +
+                ", index='" + index + '\'' +
+                ", startTable=" + startTable +
+                ", endTable=" + endTable +
+                '}';
     }
 }

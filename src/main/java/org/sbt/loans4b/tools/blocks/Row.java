@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Row {
+    private Table parent;
     private List<String> columns;
     private List<Cell> cells = new ArrayList<>();
 

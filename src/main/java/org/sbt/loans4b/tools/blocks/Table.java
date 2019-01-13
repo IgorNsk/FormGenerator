@@ -1,11 +1,17 @@
 package org.sbt.loans4b.tools.blocks;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
+    private static final Logger LOG = LoggerFactory.getLogger(Table.class);
+
     private List<String> columns = new ArrayList<>();
     private List<Row> rows = new ArrayList<>();
+    private int selectRow = 0;
 
 
     public Table(String... columns) {
@@ -40,12 +46,17 @@ public class Table {
     public boolean addRow(Object... values) {
         Row row = new Row(columns);
         int rowIndex = 0;
-        for (Object value : values) {
-            row.addCell(columns.get(rowIndex++), value);
-        }
-        rows.add(row);
+        try {
+            for (Object value : values) {
+                row.addCell(columns.get(rowIndex++), value);
+            }
+            rows.add(row);
 
-        return true;
+            return true;
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return false;
+        }
     }
 
     public List<String> getColumns() {
