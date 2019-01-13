@@ -14,6 +14,10 @@ public class FormGeneratorTest extends FormGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(FormGeneratorTest.class);
     private final Map<String, Object> parametersMap = new HashMap<>();
 
+    public FormGeneratorTest(String templateFileName) {
+        super(templateFileName);
+    }
+
     @Override
     public void build() {
 

@@ -17,9 +17,9 @@ public class App
     public static void main( String[] args )
     {
         LOG.info( "Hello World!" );
-        FormGenerator form = new FormGeneratorTest();
+        FormGenerator form = new FormGeneratorTest("template_form.xls");
         try {
-            form.prepare("template_form.xls");
+            form.prepare();
             form.build();
             form.save(FormType.PDF);
         } catch (Exception e) {
