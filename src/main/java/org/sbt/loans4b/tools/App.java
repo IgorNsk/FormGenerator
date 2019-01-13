@@ -1,7 +1,8 @@
 package org.sbt.loans4b.tools;
 
-import org.sbt.loans4b.tools.template.FormGenerator;
-import org.sbt.loans4b.tools.template.FormGeneratorImpl;
+import org.sbt.loans4b.tools.generate.FormGenerator;
+import org.sbt.loans4b.tools.generate.FormGeneratorTest;
+import org.sbt.loans4b.tools.template.FormType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,13 @@ public class App
     public static void main( String[] args )
     {
         LOG.info( "Hello World!" );
-        FormGenerator form = new FormGeneratorImpl();
-        form.generate("rsv.xls");
+        FormGenerator form = new FormGeneratorTest();
+        try {
+            form.prepare("template_form.xls");
+            form.build();
+            form.save(FormType.PDF);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
     }
 }
